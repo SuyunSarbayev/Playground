@@ -10,7 +10,7 @@ import kz.step.playground.R
 
 class ExecutorsActivity : AppCompatActivity() {
 
-    var viewModel = ExecutorsViewModel()
+    var viewModel = ExecutorsViewModel(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

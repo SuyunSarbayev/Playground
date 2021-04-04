@@ -37,7 +37,7 @@ class SecondAsyncTaskViewModel(var context: Context): ViewModel() {
         httpURLConnection.connect()
 
         var directory = File(Environment.getExternalStorageDirectory(), "downloads")
-        directory.mkdir()
+        directory.mkdirs()
 
         var uploadedFile = File(directory, "file.pdf")
         uploadedFile.createNewFile()
@@ -50,10 +50,13 @@ class SecondAsyncTaskViewModel(var context: Context): ViewModel() {
 
         var readedData = 0
 
-        while(inputStream.read(byteArrayData).also {
-                readedData = it
-            } != -1){
+        while(true){
+            var readed = inputStream.read(byteArrayData)
+            if(readed == -1){
+                break
+            }
             fileOutputStream.write(byteArrayData, 0, readedData)
+
         }
 
         fileOutputStream.close()
@@ -68,7 +71,7 @@ class SecondAsyncTaskViewModel(var context: Context): ViewModel() {
 
         httpURLConnection.requestMethod = "GET"
 
-        httpURLConnection.addRequestProperty("Content-Typetrue", "application/json")
+        httpURLConnection.addRequestProperty("Content-Type", "application/json")
 
         httpURLConnection.doInput = true
 

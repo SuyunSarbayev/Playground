@@ -9,20 +9,34 @@ import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import kotlinx.android.synthetic.main.activity_main.*
 import kz.step.playground.R
 import kz.step.playground.second.viewmodels.SecondAsyncTaskViewModel
+import kz.step.playground.second.viewmodels.SecondCoroutineViewModel
+import kz.step.playground.second.viewmodels.SecondExecutorsViewModel
 import kz.step.playground.utils.Constants
 
 class SecondActivity : AppCompatActivity(){
 
     var secondAsyncTaskViewModel = SecondAsyncTaskViewModel(this)
 
+    var secondExecutorsViewModel = SecondExecutorsViewModel(this)
+
+    var secondCoroutineViewModel = SecondCoroutineViewModel(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        secondAsyncTaskViewModel.downloadFile(Constants.file_load_url)
-        secondAsyncTaskViewModel.sendRequest(Constants.currency_url)
+        initializeObservers()
+//        secondAsyncTaskViewModel.downloadFile(Constants.file_load_url)
+//        secondAsyncTaskViewModel.sendRequest(Constants.currency_url)
+//        secondExecutorsViewModel.initiateDownloadFile(Constants.file_load_url)
+//        secondCoroutineViewModel.initiateGetRequest(Constants.currency_url)
 
+        secondCoroutineViewModel.initiateDownloadImage(Constants.image_url)
+
+        secondCoroutineViewModel.initiateDownloadFile(Constants.file_load_url)
     }
 
     override fun onResume() {
@@ -33,6 +47,20 @@ class SecondActivity : AppCompatActivity(){
     override fun onPause() {
         super.onPause()
 //        unregisterReceiver(FileLoadedReceiver())
+    }
+
+    fun initializeObservers(){
+        secondCoroutineViewModel.liveData.observe(this, Observer{
+            Log.d("COROUTINE", it)
+        })
+
+        secondCoroutineViewModel.liveDataImage.observe(this, Observer{
+            image.setImageBitmap(it)
+        })
+
+        secondCoroutineViewModel.liveDataFile.observe(this, Observer{
+            initiateOpenFile(it)
+        })
     }
 
     inner class FileLoadedReceiver: BroadcastReceiver(){

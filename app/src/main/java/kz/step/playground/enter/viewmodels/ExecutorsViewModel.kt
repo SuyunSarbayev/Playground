@@ -1,9 +1,12 @@
 package kz.step.playground.enter.viewmodels
 
+import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kz.step.playground.second.activity.SecondActivity
 import java.io.InputStreamReader
 import java.lang.StringBuilder
 import java.net.HttpURLConnection
@@ -13,7 +16,7 @@ import java.util.concurrent.LinkedBlockingDeque
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 
-class ExecutorsViewModel : ViewModel() {
+class ExecutorsViewModel(var context: Context) : ViewModel() {
 
     var resultLiveData: MutableLiveData<StringBuilder> = MutableLiveData()
 
